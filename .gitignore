@@ -1,0 +1,14 @@
+# General
+.DS_Store
+Thumbs.db
+
+# Build
+build/
+out/
+.gradle/
+*.properties
+!/gradle/wrapper/gradle-wrapper.properties
+
+# Idea IDE
+.idea/
+*.iml

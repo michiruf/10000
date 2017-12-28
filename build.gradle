@@ -1,0 +1,47 @@
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.7'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:3.0.2'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    configureMaven(project)
+    configureGitRevision(project)
+}
+
+def configureMaven(Project project) {
+    project.apply plugin: 'maven'
+    project.group = 'com.github.michiruf'
+}
+
+def configureGitRevision(Project project) {
+    String gitVersion = ('git rev-list --count HEAD ' + getRelativeProjectPath(project, rootDir))
+            .execute((List) null, rootDir)
+            .text
+            .trim()
+    // NOTE separate the major version into a variable
+    project.version = '1.0.' + gitVersion;
+}
+
+def getRelativeProjectPath(Project project, File relativeTo) {
+    String relativePath = project.getProjectDir().getCanonicalPath()
+            .replace(relativeTo.getCanonicalPath(), '')
+            .replace('\\', '/')
+    if (relativePath.startsWith('/')) {
+        relativePath = relativePath.substring(1)
+    }
+    return relativePath
+}

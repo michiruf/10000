@@ -1,0 +1,30 @@
+def mainClass = 'de.michiruf.control_server.client_java.JavaControlClient'
+
+apply plugin: 'java'
+apply plugin: 'nebula.provided-base'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+
+    compile project(':game-common')
+    compile project(':game-bots')
+
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    provided('com.squareup.dagger:dagger-compiler:1.2.2') {
+        // Due to dagger itself shell not be provided
+        // (at least IntelliJ IDEA displays this as provided if not excluded)
+        exclude group: 'com.squareup.dagger', module: 'dagger'
+    }
+}
+
+jar.manifest.attributes 'Main-Class': mainClass
+
+task fatJar(type: Jar) {
+    version += '-release'
+    manifest.attributes 'Main-Class': mainClass
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}

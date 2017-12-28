@@ -1,0 +1,4 @@
+rootProject.name = '10000er'
+include ':game'
+include ':game-common'
+include ':game-bots'
