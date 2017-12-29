@@ -125,7 +125,7 @@ public class Game {
 
         // Check if thresholds are reached
         if (!failed) {
-            if (!player.isEnterGameThresholdReached() && !player.isEnterGameThresholdReached(points)) {
+            if (!player.hasEnteredGame() && !player.isEnterGameThresholdReached(points)) {
                 exception = new GameException(String.format("Enter game threshold not reached (%d/%d)",
                         points, Configuration.ENTER_GAME_THRESHOLD));
                 failed = true;

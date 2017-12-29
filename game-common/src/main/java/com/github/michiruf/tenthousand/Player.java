@@ -10,11 +10,13 @@ public class Player {
     final PlayerDecisionInterface decisionInterface;
 
     private int points;
+    private boolean enteredGame;
 
     public Player(String name, PlayerDecisionInterface player) {
         this.name = name;
-        this.decisionInterface = player;
-        this.points = 0;
+        decisionInterface = player;
+        points = 0;
+        enteredGame = false;
     }
 
     public int getPoints() {
@@ -22,11 +24,14 @@ public class Player {
     }
 
     void addPoints(int points) {
+        if(points > Configuration.ENTER_GAME_THRESHOLD) {
+            enteredGame = true;
+        }
         this.points += points;
     }
 
-    public boolean isEnterGameThresholdReached() {
-        return isEnterGameThresholdReached(points);
+    public boolean hasEnteredGame() {
+        return enteredGame;
     }
 
     public boolean isEnterGameThresholdReached(int points) {
