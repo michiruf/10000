@@ -77,7 +77,7 @@ public class ConsoleInputPlayer implements PlayerDecisionInterface {
 
     @Override
     public void onError(GameException e) {
-        System.out.println(String.format("Error: %s", e.getMessage()));
+        System.err.println(String.format("Error: %s", e.getMessage()));
     }
 
     private static Scanner s = new Scanner(System.in);
