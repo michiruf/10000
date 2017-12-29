@@ -31,7 +31,7 @@ public class Game {
     public void startGame() {
         // Delegate the game start
         for (Player player : players) {
-            player.decisionInterface.onGameStart(players);
+            player.decisionInterface.onGameStart(players, player);
         }
 
         // Start new rounds as long as no one has won
@@ -45,7 +45,6 @@ public class Game {
             }
             currentRound++;
         }
-
 
         // Delegate the game end
         for (Player player : players) {
@@ -89,7 +88,7 @@ public class Game {
 
                 // Roll the dice & tell the player (always, also if lost)
                 Dice[] dices = Dice.randomSorted(numberOfDices);
-                diceAction = player.decisionInterface.onTurnDiceRolled(dices);
+                diceAction = player.decisionInterface.onTurnDiceRolled(dices, points);
 
                 // If there was no new value, the players turn is over
                 if (!DicesValueDetector.hasAValue(dices)) {
@@ -140,16 +139,17 @@ public class Game {
         if (!failed) {
             player.addPoints(points);
             previousRoundAdoptionState = new RoundAdoptionState(points, numberOfDices);
-            player.decisionInterface.onTurnEnd(true);
+            player.decisionInterface.onTurnEnd(true, points);
             return;
         }
 
         // Remove points if failed and set the adoption state
+        int negAdoptedPoints = -previousRoundAdoptionState.adoptedPoints;
         if (adopted) {
-            player.addPoints(-previousRoundAdoptionState.adoptedPoints);
+            player.addPoints(negAdoptedPoints);
         }
         previousRoundAdoptionState = RoundAdoptionState.NO_ADOPTION;
-        player.decisionInterface.onTurnEnd(false);
+        player.decisionInterface.onTurnEnd(false, negAdoptedPoints);
 
         // Redirect the exception as normally to the calling method
         // By this we ensure that adoption is applied also if a exception occurs

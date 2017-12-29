@@ -1,6 +1,7 @@
 package com.github.michiruf.tenthousand;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Random;
 
 /**
@@ -31,8 +32,8 @@ public class Dice {
     }
 
     public static Dice[] randomSorted(int count) {
-        return Arrays.asList(random(count)).stream()
-                .sorted((o1, o2) -> o1.getValue() - o2.getValue())
+        return Arrays.stream(random(count))
+                .sorted(Comparator.comparingInt(Dice::getValue))
                 .toArray(Dice[]::new);
     }
 

@@ -16,7 +16,7 @@ public class ConsoleInputPlayer implements PlayerDecisionInterface {
     private Player[] players;
 
     @Override
-    public void onGameStart(Player[] players) {
+    public void onGameStart(Player[] players, Player self) {
         this.players = players;
         System.out.println("============= PLAYERS =============");
         for (Player player : players) {
@@ -42,8 +42,9 @@ public class ConsoleInputPlayer implements PlayerDecisionInterface {
     }
 
     @Override
-    public DiceAction onTurnDiceRolled(Dice[] newDices) {
+    public DiceAction onTurnDiceRolled(Dice[] newDices, int pointsThisRoundSoFar) {
         System.out.println("============== DICES ==============");
+        System.out.println(String.format("Points this round so far: %d", pointsThisRoundSoFar));
         for (Dice newDice : newDices) {
             System.out.print(String.format("%d, ", newDice.getValue()));
         }
@@ -64,7 +65,7 @@ public class ConsoleInputPlayer implements PlayerDecisionInterface {
     }
 
     @Override
-    public void onTurnEnd(boolean successfulRound) {
+    public void onTurnEnd(boolean successfulRound, int pointsReceived) {
         System.out.println(String.format("Round-successful (got points):\t%b", successfulRound));
         System.out.println("///////////////////////////////////");
     }

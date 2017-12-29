@@ -5,6 +5,7 @@ Thumbs.db
 # Build
 build/
 out/
+classes/
 .gradle/
 *.properties
 !/gradle/wrapper/gradle-wrapper.properties
