@@ -86,15 +86,17 @@ public class Game {
                     numberOfDices = Configuration.NO_DICES;
                 }
 
-                // Roll the dice & tell the player (always, also if lost)
+                // Roll the dice
                 Dice[] dices = Dice.randomSorted(numberOfDices);
-                diceAction = player.decisionInterface.onTurnDiceRolled(dices, points);
 
                 // If there was no new value, the players turn is over
                 if (!DicesValueDetector.hasAValue(dices)) {
                     failed = true;
                     break;
                 }
+
+                // Only inform the player when dices are available
+                diceAction = player.decisionInterface.onTurnDiceRolled(dices, points);
 
                 // At least one dice needs to be kept
                 if (diceAction.dicesToKeep.length == 0) {

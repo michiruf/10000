@@ -24,4 +24,6 @@ public class RoundAdoptionState {
     public boolean isAdoptionAvailable() {
         return adoptedPoints > 0;
     }
+
+    // TODO Add reference to player and add method isAdoptionPossible respecting player points...
 }

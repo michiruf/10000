@@ -27,7 +27,8 @@ public interface PlayerDecisionInterface {
     AdoptAction onTurnStart(RoundAdoptionState roundAdoptionState);
 
     /**
-     * Called when the dice was rolled and new information is available to the player.
+     * Called when the dice was rolled and new information is available to the player
+     * if there were some dices of value.
      *
      * @param newDices             Results of the dices for the new roll
      * @param pointsThisRoundSoFar Points the user made so far in the current round
