@@ -1,4 +1,4 @@
-package com.github.tenthousand.bots;
+package com.github.tenthousand;
 
 import com.github.michiruf.tenthousand.*;
 import com.github.michiruf.tenthousand.exception.GameException;

@@ -1,7 +1,6 @@
 package com.github.tenthousand;
 
 import com.github.michiruf.tenthousand.PlayerDecisionInterface;
-import com.github.tenthousand.bots.ConsoleInputPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
