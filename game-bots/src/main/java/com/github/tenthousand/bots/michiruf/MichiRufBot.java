@@ -1,15 +1,21 @@
-//package com.github.tenthousand.bots;
-//
-//import com.github.michiruf.tenthousand.PlayerContainer;
-//import com.github.michiruf.tenthousand.PlayerDecisionInterface;
-//
-///**
-// * @author Michael Ruf
-// * @since 2017-12-26
-// */
-//public class MichiRufBot implements PlayerDecisionInterface {
-//
-//    static {
-//        PlayerContainer.PLAYERS.add(new MichiRufBot());
-//    }
-//}
+package com.github.tenthousand.bots.michiruf;
+
+import com.github.michiruf.tenthousand.PlayerDecisionInterface;
+import com.github.michiruf.tenthousand.PlayerInterface;
+
+/**
+ * @author Michael Ruf
+ * @since 2017-12-26
+ */
+public class MichiRufBot implements PlayerInterface {
+
+    @Override
+    public void onInitialization() {
+        // TODO Nothing yet...
+    }
+
+    @Override
+    public PlayerDecisionInterface getDecisionInterface() {
+        return new MichiRufDecisions();
+    }
+}

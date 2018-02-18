@@ -18,6 +18,9 @@ dependencies {
         // (at least IntelliJ IDEA displays this as provided if not excluded)
         exclude group: 'com.squareup.dagger', module: 'dagger'
     }
+
+    // Command line parsing
+    compile 'com.beust:jcommander:1.71'
 }
 
 jar.manifest.attributes 'Main-Class': mainClass

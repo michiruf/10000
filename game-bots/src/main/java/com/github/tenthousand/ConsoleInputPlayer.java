@@ -11,9 +11,22 @@ import java.util.Scanner;
  * @author Michael Ruf
  * @since 2017-12-28
  */
-public class ConsoleInputPlayer implements PlayerDecisionInterface {
+public class ConsoleInputPlayer implements PlayerInterface, PlayerDecisionInterface {
 
     private Player[] players;
+
+    @Override
+    public void onInitialization() {
+        // Do nothing
+    }
+
+    @Override
+    public PlayerDecisionInterface getDecisionInterface() {
+        // We can return the own instance since no fields are used for logic stuff
+        // TODO Might not be correct if we want to play 2 games with a console player..
+        // ... Whatever!
+        return this;
+    }
 
     @Override
     public void onGameStart(Player[] players, Player self) {

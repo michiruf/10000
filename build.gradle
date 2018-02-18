@@ -33,7 +33,7 @@ def configureGitRevision(Project project) {
             .text
             .trim()
     // NOTE separate the major version into a variable
-    project.version = '1.0.' + gitVersion;
+    project.version = '1.0.' + gitVersion
 }
 
 def getRelativeProjectPath(Project project, File relativeTo) {

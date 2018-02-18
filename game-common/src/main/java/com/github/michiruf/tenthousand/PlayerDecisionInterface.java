@@ -9,7 +9,7 @@ import com.github.michiruf.tenthousand.exception.GameException;
 public interface PlayerDecisionInterface {
 
     /**
-     * Called when the game starts. Use this for more long initializations.
+     * Called when the game starts. Use this for game depending long initializations.
      *
      * @param players List of players that started the game
      *                Contains for example also information about points
