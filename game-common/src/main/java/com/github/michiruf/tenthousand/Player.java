@@ -24,10 +24,12 @@ public class Player {
     }
 
     void addPoints(int points) {
-        if(points > Configuration.ENTER_GAME_THRESHOLD) {
+        if (isEnterGameThresholdReached(points)) {
             enteredGame = true;
         }
-        this.points += points;
+        if (enteredGame) {
+            this.points += points;
+        }
     }
 
     public boolean hasEnteredGame() {

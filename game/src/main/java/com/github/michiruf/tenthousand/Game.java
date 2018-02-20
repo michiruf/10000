@@ -67,10 +67,10 @@ public class Game {
         // Do the adoption change if possible
         if (adoptAction == AdoptAction.ADOPT) {
             if (!previousRoundAdoptionState.isAdoptionAvailable()) {
-                throw new GameException("Adoption only possible if the previous player got points");
+                throw new GameException("Adoption only possible if the previous player got points", player);
             }
             if (previousRoundAdoptionState.adoptedPoints > player.getPoints()) {
-                throw new GameException("Adoption only possible if enough points");
+                throw new GameException("Adoption only possible if enough points", player);
             }
             points = previousRoundAdoptionState.adoptedPoints;
             numberOfDices = previousRoundAdoptionState.adoptedNumberOfDicesRemaining;
@@ -100,17 +100,17 @@ public class Game {
 
                 // At least one dice needs to be kept
                 if (diceAction.dicesToKeep.length == 0) {
-                    throw new GameException("At least one dice must be kept");
+                    throw new GameException("At least one dice must be kept", player);
                 }
 
                 // If there was were dices that do not contain any value, the player failed
                 if (!DicesValueDetector.hasOnlyValues(diceAction.dicesToKeep)) {
-                    throw new GameException("Not all dices to keep were worth something");
+                    throw new GameException("Not all dices to keep were worth something", player);
                 }
 
                 // If there are dices that were not rolled, the player failed
                 if (!DicesValueDetector.contains(dices, diceAction.dicesToKeep)) {
-                    throw new GameException("Dices that were not rolled were selected to keep");
+                    throw new GameException("Dices that were not rolled were selected to keep", player);
                 }
 
                 // Keep the dices the player wanted (by the points)
@@ -128,11 +128,11 @@ public class Game {
         if (!failed) {
             if (!player.hasEnteredGame() && !player.isEnterGameThresholdReached(points)) {
                 exception = new GameException(String.format("Enter game threshold not reached (%d/%d)",
-                        points, Configuration.ENTER_GAME_THRESHOLD));
+                        points, Configuration.ENTER_GAME_THRESHOLD), player);
                 failed = true;
             } else if (points < Configuration.ROUND_THRESHOLD) {
                 exception = new GameException(String.format("Round point threshold not reached (%d)",
-                        Configuration.ROUND_THRESHOLD));
+                        Configuration.ROUND_THRESHOLD), player);
                 failed = true;
             }
         }
