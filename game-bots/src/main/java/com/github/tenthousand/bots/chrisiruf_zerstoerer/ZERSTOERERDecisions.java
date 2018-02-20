@@ -10,7 +10,7 @@ import com.github.michiruf.tenthousand.PlayerDecisionInterface;
 import com.github.michiruf.tenthousand.RoundAdoptionState;
 import com.github.michiruf.tenthousand.exception.GameException;
 
-public class ZERSTOERERDecisions implements PlayerDecisionInterface {
+class ZERSTOERERDecisions implements PlayerDecisionInterface {
 
     static PolicyStateAction pol1000;
     static PolicyStateAction pol250;
