@@ -1,9 +1,8 @@
-package com.github.tenthousand.bots.chrisiruf_zerstoerer.zehntausenderDeploy;
+package com.github.tenthousand.bots.chrisiruf_zerstoerer;
 
 import java.util.HashSet;
 
 import lombok.EqualsAndHashCode;
-import com.github.tenthousand.bots.chrisiruf_zerstoerer.util.AH;
 
 /**
  * Types of decisions:
@@ -14,7 +13,7 @@ import com.github.tenthousand.bots.chrisiruf_zerstoerer.util.AH;
  * </ul>
  */
 @EqualsAndHashCode
-public class Decision {
+class Decision {
 
     static Decision[] getX(StatePre s) {
         // standard turn start

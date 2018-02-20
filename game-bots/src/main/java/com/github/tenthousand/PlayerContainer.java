@@ -2,7 +2,7 @@ package com.github.tenthousand;
 
 import com.github.michiruf.tenthousand.PlayerDecisionInterface;
 import com.github.tenthousand.bots.ConsoleInputPlayer;
-import com.github.tenthousand.bots.chrisiruf_zerstoerer.zehntausenderDeploy.ZERSTOERER;
+import com.github.tenthousand.bots.chrisiruf_zerstoerer.ZERSTOERER;
 
 import java.util.ArrayList;
 import java.util.List;

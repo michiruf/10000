@@ -1,6 +1,6 @@
-package com.github.tenthousand.bots.chrisiruf_zerstoerer.util;
+package com.github.tenthousand.bots.chrisiruf_zerstoerer;
 
-public class MyMath {
+class MyMath {
 
     /** Allowed calculation error. */
     public static final double RC_EPS = 1.0e-6;

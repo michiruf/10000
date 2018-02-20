@@ -1,8 +1,8 @@
-package com.github.tenthousand.bots.chrisiruf_zerstoerer.util;
+package com.github.tenthousand.bots.chrisiruf_zerstoerer;
 
 import java.util.ArrayList;
 
-public class Partition {
+class Partition {
 
     /**
      * 

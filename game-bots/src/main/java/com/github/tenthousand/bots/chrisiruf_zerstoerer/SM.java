@@ -1,9 +1,6 @@
-package com.github.tenthousand.bots.chrisiruf_zerstoerer.zehntausenderDeploy;
+package com.github.tenthousand.bots.chrisiruf_zerstoerer;
 
-import com.github.tenthousand.bots.chrisiruf_zerstoerer.util.AH;
-import com.github.tenthousand.bots.chrisiruf_zerstoerer.util.MyMath;
-
-public class SM {
+class SM {
 
     /**
      * @return points for dice spotses.

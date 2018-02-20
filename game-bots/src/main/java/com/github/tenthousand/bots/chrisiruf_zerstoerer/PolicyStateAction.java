@@ -1,14 +1,11 @@
-package com.github.tenthousand.bots.chrisiruf_zerstoerer.zehntausenderDeploy;
+package com.github.tenthousand.bots.chrisiruf_zerstoerer;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
-import com.github.tenthousand.bots.chrisiruf_zerstoerer.util.AH;
-
-public class PolicyStateAction {
+class PolicyStateAction {
 
     int                         threshold;
     HashMap<StatePre, Decision> A;

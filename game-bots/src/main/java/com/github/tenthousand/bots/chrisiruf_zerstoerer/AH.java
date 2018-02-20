@@ -1,8 +1,8 @@
-package com.github.tenthousand.bots.chrisiruf_zerstoerer.util;
+package com.github.tenthousand.bots.chrisiruf_zerstoerer;
 
 import java.util.ArrayList;
 
-public class AH {
+class AH {
 
     public static String toString(Object[] a, String startDelim, String delim, String endDelim) {
         if (a == null) return "null";

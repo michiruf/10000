@@ -1,10 +1,8 @@
-package com.github.tenthousand.bots.chrisiruf_zerstoerer.zehntausenderDeploy;
+package com.github.tenthousand.bots.chrisiruf_zerstoerer;
 
 import java.util.HashSet;
 
 import lombok.EqualsAndHashCode;
-import com.github.tenthousand.bots.chrisiruf_zerstoerer.util.AH;
-import com.github.tenthousand.bots.chrisiruf_zerstoerer.util.Partition;
 
 /**
  * Types of states:
@@ -15,7 +13,7 @@ import com.github.tenthousand.bots.chrisiruf_zerstoerer.util.Partition;
  * </ul>
  */
 @EqualsAndHashCode
-public class StatePre {
+class StatePre {
 
     /** Generate all states that need a decision!!! */
     static StatePre[] getStates() {

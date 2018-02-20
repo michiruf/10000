@@ -1,13 +1,11 @@
-package com.github.tenthousand.bots.chrisiruf_zerstoerer.zehntausenderDeploy;
+package com.github.tenthousand.bots.chrisiruf_zerstoerer;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.github.tenthousand.bots.chrisiruf_zerstoerer.util.AH;
-
-public class Zer {
+class Zer {
 
     final static int        MAX_POINTS = 2400;                                  // inclusive
     final static int        NO_DICE    = 6;
