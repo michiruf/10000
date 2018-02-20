@@ -12,10 +12,7 @@ import com.github.michiruf.tenthousand.exception.GameException;
 
 class ZERSTOERERDecisions implements PlayerDecisionInterface {
 
-    static PolicyStateAction pol1000;
-    static PolicyStateAction pol250;
-    private static boolean polLoaded = false;
-    private static final Object polLoadLock = new Object();
+
     PolicyStateAction pol;          // active policy
 
     Player[]          players;
@@ -29,17 +26,9 @@ class ZERSTOERERDecisions implements PlayerDecisionInterface {
 
     @Override
     public void onGameStart(Player[] players, Player self) {
-        synchronized (polLoadLock) {
-            if(!polLoaded) {
-                pol1000 = new PolicyStateAction(getClass().getResourceAsStream("/chrisiruf_zerstoerer/pol1000"));
-                pol250 = new PolicyStateAction(getClass().getResourceAsStream("/chrisiruf_zerstoerer/pol250"));
-            }
-            polLoaded = true;
-        }
-
         this.players = players;
         this.me = self;
-        pol = pol1000;
+        pol = ZERSTOERER.pol1000;
         totalPoints = 0;
         pointsAdopted = 0;
         System.err.println("Fuck yeah!");
@@ -96,7 +85,7 @@ class ZERSTOERERDecisions implements PlayerDecisionInterface {
 
     @Override
     public void onTurnEnd(boolean successfulRound, int pointsReceived) {
-        if (me.getPoints() >= 1000) pol = pol250; // switch policy
+        if (me.getPoints() >= 1000) pol = ZERSTOERER.pol250; // switch policy
     }
 
     @Override
