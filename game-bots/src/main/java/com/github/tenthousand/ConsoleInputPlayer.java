@@ -84,7 +84,7 @@ public class ConsoleInputPlayer implements PlayerInterface, PlayerDecisionInterf
     }
 
     @Override
-    public void onGameEnd(Player[] players, Player wonPlayer) {
+    public void onGameEnd(Player[] players, Player[] wonPlayers) {
         System.out.println("Game Over!");
     }
 

@@ -36,6 +36,7 @@ public class Player {
         return enteredGame;
     }
 
+    // TODO This method does not belong here!
     public boolean isEnterGameThresholdReached(int points) {
         return points >= Configuration.ENTER_GAME_THRESHOLD;
     }

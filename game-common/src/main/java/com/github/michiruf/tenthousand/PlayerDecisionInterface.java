@@ -47,10 +47,10 @@ public interface PlayerDecisionInterface {
     /**
      * Called when the game ends and the winner is decided.
      *
-     * @param players   List of players with their states when the game ended
-     * @param wonPlayer The player that won the game
+     * @param players    List of players with their states when the game ended
+     * @param wonPlayers The players that won the game
      */
-    void onGameEnd(Player[] players, Player wonPlayer);
+    void onGameEnd(Player[] players, Player[] wonPlayers);
 
     /**
      * Called when a non valid decision was told to the game.

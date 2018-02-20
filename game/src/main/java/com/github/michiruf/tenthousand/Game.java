@@ -2,33 +2,27 @@ package com.github.michiruf.tenthousand;
 
 import com.github.michiruf.tenthousand.exception.GameException;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author Michael Ruf
  * @since 2017-12-27
  */
-public class Game {
+class Game {
 
     private Player[] players;
-
     private int currentRound;
     private RoundAdoptionState previousRoundAdoptionState;
 
-    public Game(PlayerDecisionInterface[] decisionInterfaces) {
-        initializePlayers(decisionInterfaces);
+    Game(Player[] players) {
+        this.players = players;
         currentRound = 0;
         previousRoundAdoptionState = RoundAdoptionState.NO_ADOPTION;
     }
 
-    private void initializePlayers(PlayerDecisionInterface[] decisionInterfaces) {
-        players = new Player[decisionInterfaces.length];
-        for (int i = 0; i < players.length; i++) {
-            players[i] = new Player(
-                    decisionInterfaces[i].getClass().getSimpleName(),
-                    decisionInterfaces[i]);
-        }
-    }
-
-    public void startGame() {
+    void runGame() {
         // Delegate the game start
         for (Player player : players) {
             player.decisionInterface.onGameStart(players, player);
@@ -48,8 +42,21 @@ public class Game {
 
         // Delegate the game end
         for (Player player : players) {
-            player.decisionInterface.onGameEnd(players, null); // TODO Won player may not be just one; for now just null
+            player.decisionInterface.onGameEnd(players, getWonPlayers());
         }
+    }
+
+    Player[] getWonPlayers() {
+        List<Player> wonPlayers = Arrays.asList(players);
+        int maxPoints = wonPlayers.stream()
+                .filter(player -> player.getPoints() >= Configuration.WON_GAME_THRESHOLD)
+                .mapToInt(Player::getPoints)
+                .max()
+                .orElse(-1);
+        wonPlayers = wonPlayers.stream()
+                .filter(player -> player.getPoints() == maxPoints)
+                .collect(Collectors.toList());
+        return wonPlayers.toArray(new Player[wonPlayers.size()]);
     }
 
     private void startPlayerTurn(Player player) throws GameException {

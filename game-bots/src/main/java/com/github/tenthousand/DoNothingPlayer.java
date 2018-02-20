@@ -42,7 +42,7 @@ public class DoNothingPlayer implements PlayerInterface, PlayerDecisionInterface
     }
 
     @Override
-    public void onGameEnd(Player[] players, Player wonPlayer) {
+    public void onGameEnd(Player[] players, Player[] wonPlayers) {
         // Do nothing
     }
 

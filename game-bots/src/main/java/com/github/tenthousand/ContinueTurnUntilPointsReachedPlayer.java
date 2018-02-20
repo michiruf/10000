@@ -11,6 +11,7 @@ public class ContinueTurnUntilPointsReachedPlayer implements PlayerInterface {
 
     @Override
     public void onInitialization() {
+        // Do nothing
     }
 
     @Override
@@ -53,7 +54,7 @@ public class ContinueTurnUntilPointsReachedPlayer implements PlayerInterface {
         }
 
         @Override
-        public void onGameEnd(Player[] players, Player wonPlayer) {
+        public void onGameEnd(Player[] players, Player[] wonPlayers) {
             // Do nothing
         }
 
