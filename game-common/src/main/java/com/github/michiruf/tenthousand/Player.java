@@ -12,7 +12,7 @@ public class Player {
     private int points;
     private boolean enteredGame;
 
-    public Player(String name, PlayerDecisionInterface player) {
+    Player(String name, PlayerDecisionInterface player) {
         this.name = name;
         decisionInterface = player;
         points = 0;
@@ -24,16 +24,19 @@ public class Player {
     }
 
     void addPoints(int points) {
-        if(points > Configuration.ENTER_GAME_THRESHOLD) {
+        if (isEnterGameThresholdReached(points)) {
             enteredGame = true;
         }
-        this.points += points;
+        if (enteredGame) {
+            this.points += points;
+        }
     }
 
     public boolean hasEnteredGame() {
         return enteredGame;
     }
 
+    // TODO This method does not belong here!
     public boolean isEnterGameThresholdReached(int points) {
         return points >= Configuration.ENTER_GAME_THRESHOLD;
     }

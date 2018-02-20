@@ -16,7 +16,7 @@ public class RoundAdoptionState {
         adoptedNumberOfDicesRemaining = 0;
     }
 
-    public RoundAdoptionState(int adoptedPoints, int adoptedNumberOfDicesRemaining) {
+    RoundAdoptionState(int adoptedPoints, int adoptedNumberOfDicesRemaining) {
         this.adoptedPoints = adoptedPoints;
         this.adoptedNumberOfDicesRemaining = adoptedNumberOfDicesRemaining;
     }

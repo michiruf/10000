@@ -12,12 +12,16 @@ dependencies {
     compile project(':game-common')
     compile project(':game-bots')
 
+    // TODO Dagger is currently not used
     compile 'com.squareup.dagger:dagger:1.2.2'
     provided('com.squareup.dagger:dagger-compiler:1.2.2') {
         // Due to dagger itself shell not be provided
         // (at least IntelliJ IDEA displays this as provided if not excluded)
         exclude group: 'com.squareup.dagger', module: 'dagger'
     }
+
+    // Command line parsing
+    compile 'com.beust:jcommander:1.71'
 }
 
 jar.manifest.attributes 'Main-Class': mainClass
