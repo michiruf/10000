@@ -7,21 +7,35 @@ import com.github.michiruf.tenthousand.exception.GameException;
  * @author Michael Ruf
  * @since 2018-02-18
  */
-public class MichiRufDecisions implements PlayerDecisionInterface {
+class MichiRufDecisions implements PlayerDecisionInterface {
+
+    private Player[] players;
+    private Player me;
 
     @Override
     public void onGameStart(Player[] players, Player self) {
-
+        this.players = players;
+        me = self;
     }
 
     @Override
     public AdoptAction onTurnStart(RoundAdoptionState roundAdoptionState) {
+        // For now, because other persons may have always correct decisions, we do never want to adopt stuff
         return AdoptAction.IGNORE;
     }
 
     @Override
     public DiceAction onTurnDiceRolled(Dice[] newDices, int pointsThisRoundSoFar) {
-        return new DiceAction(newDices, false);
+        // For now, just enter the game by continuing until there are 1000 points
+        if (!me.hasEnteredGame()) {
+            DicesValueDetector d = new DicesValueDetector(newDices);
+            return new DiceAction(d.getValuableDices(), pointsThisRoundSoFar + d.calculatePoints() < 1000);
+        }
+
+        int dp = DicesValueDetector.calculatePoints(newDices);
+        int sp = dp + pointsThisRoundSoFar;
+        System.out.println("Points " + pointsThisRoundSoFar + " + " + dp + " = " + sp);
+        return new DiceAction(DicesValueDetector.getValuableDices(newDices), sp < 250);
     }
 
     @Override
@@ -30,12 +44,12 @@ public class MichiRufDecisions implements PlayerDecisionInterface {
     }
 
     @Override
-    public void onGameEnd(Player[] players, Player wonPlayer) {
+    public void onGameEnd(Player[] players, Player[] wonPlayers) {
 
     }
 
     @Override
     public void onError(GameException e) {
-
+        e.printStackTrace();
     }
 }
