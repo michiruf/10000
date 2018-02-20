@@ -127,12 +127,12 @@ public class Game {
         // Check if thresholds are reached
         if (!failed) {
             if (!player.hasEnteredGame() && !player.isEnterGameThresholdReached(points)) {
-                exception = new GameException(String.format("Enter game threshold not reached (%d/%d)",
+                exception = new GameException(String.format("Enter game threshold not reached (%d of %d)",
                         points, Configuration.ENTER_GAME_THRESHOLD), player);
                 failed = true;
             } else if (points < Configuration.ROUND_THRESHOLD) {
-                exception = new GameException(String.format("Round point threshold not reached (%d)",
-                        Configuration.ROUND_THRESHOLD), player);
+                exception = new GameException(String.format("Round point threshold not reached (%d of %d)",
+                        points, Configuration.ROUND_THRESHOLD), player);
                 failed = true;
             }
         }

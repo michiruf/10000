@@ -12,7 +12,7 @@ public class Player {
     private int points;
     private boolean enteredGame;
 
-    public Player(String name, PlayerDecisionInterface player) {
+    Player(String name, PlayerDecisionInterface player) {
         this.name = name;
         decisionInterface = player;
         points = 0;

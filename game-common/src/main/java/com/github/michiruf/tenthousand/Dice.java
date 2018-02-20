@@ -52,17 +52,13 @@ public class Dice {
             case 6:
                 return SIX;
             default:
-                if (spot > Configuration.DICE_PIPS) {
-                    throw new IllegalArgumentException("Spot does not exist");
-                }
                 return new Dice(spot);
         }
     }
 
     private int value;
 
-    // NOTE Was private
-    public Dice(int value) {
+    private Dice(int value) {
         this.value = value;
     }
 

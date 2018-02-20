@@ -69,7 +69,7 @@ public class ConsoleInputPlayer implements PlayerInterface, PlayerDecisionInterf
         String dices = readString();
         if (dices.length() > 0) {
             for (String s : dices.split(",")) {
-                actionDices.add(new Dice(Integer.parseInt(s)));
+                actionDices.add(Dice.fromSpot(Integer.parseInt(s)));
             }
         }
         System.out.println("Continue?\t");
