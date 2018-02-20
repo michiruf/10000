@@ -32,6 +32,7 @@ public class DoNothingPlayer implements PlayerInterface, PlayerDecisionInterface
     @Override
     public DiceAction onTurnDiceRolled(Dice[] newDices, int pointsThisRoundSoFar) {
         // Always continuing lets this bot fail every round
+        // Note that this causes the player to return invalid dices in most cases
         return new DiceAction(newDices, true);
     }
 
@@ -47,6 +48,6 @@ public class DoNothingPlayer implements PlayerInterface, PlayerDecisionInterface
 
     @Override
     public void onError(GameException e) {
-        // Do nothing
+        // Do not print errors because this player will do stuff that is not wanted by the game
     }
 }

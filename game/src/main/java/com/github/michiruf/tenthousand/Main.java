@@ -54,7 +54,14 @@ public class Main {
                         .collect(Collectors.toList())
                         .toArray(new PlayerDecisionInterface[players.size()]));
                 g.startGame();
+                System.out.println("Ended game #" + (finalI + 1));
+
                 // TODO Get the won player and count!
+
+                // Tear down the executor manually when all games are done because it does not do this itself
+                if(finalI == arguments.gamesCount - 1) {
+                    executor.shutdown();
+                }
             });
         }
     }

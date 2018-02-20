@@ -15,6 +15,7 @@ public final class PlayerContainer {
     public static List<PlayerInterface> all() {
         List<PlayerInterface> players = new ArrayList<>();
         players.add(new DoNothingPlayer());
+        players.add(new ContinueTurnUntilPointsReachedPlayer());
         players.add(new ConsoleInputPlayer());
         players.add(new MichiRufBot());
         return players;
