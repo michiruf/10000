@@ -11,7 +11,7 @@ public class MichiRufBot implements PlayerInterface {
 
     @Override
     public void onInitialization() {
-        // TODO Nothing yet...
+        DiceState.initialize();
     }
 
     @Override

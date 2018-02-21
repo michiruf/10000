@@ -26,16 +26,18 @@ class MichiRufDecisions implements PlayerDecisionInterface {
 
     @Override
     public DiceAction onTurnDiceRolled(Dice[] newDices, int pointsThisRoundSoFar) {
-        // For now, just enter the game by continuing until there are 1000 points
+        // Enter the game and continue rolling if there are 4 or more dices left
+        // NOTE Could be improved by not always taking all valuable dices
+        // TODO Use Strategy pattern
         if (!me.hasEnteredGame()) {
             DicesValueDetector d = new DicesValueDetector(newDices);
-            return new DiceAction(d.getValuableDices(), pointsThisRoundSoFar + d.calculatePoints() < 1000);
+            Dice[] valuableDices = d.getValuableDices();
+            boolean continueTilPointsReached = pointsThisRoundSoFar + d.calculatePoints() < 1000;
+            boolean continueIfTooMuchDicesLeft = valuableDices.length <= 2;
+            return new DiceAction(valuableDices, continueTilPointsReached || continueIfTooMuchDicesLeft);
         }
 
-        int dp = DicesValueDetector.calculatePoints(newDices);
-        int sp = dp + pointsThisRoundSoFar;
-        System.out.println("Points " + pointsThisRoundSoFar + " + " + dp + " = " + sp);
-        return new DiceAction(DicesValueDetector.getValuableDices(newDices), sp < 250);
+        return new TurnDecider(newDices, pointsThisRoundSoFar).calculateDecision();
     }
 
     @Override
