@@ -9,8 +9,6 @@ import java.util.Map;
  * @author Michael Ruf
  * @since 2018-02-21
  */
-// TODO Calculate all selections of the available dices after they where rolles
-// And perform on each as state calculation (one must have the best solution)
 class DiceState {
 
     // NOTE Could be just a list!
@@ -32,7 +30,8 @@ class DiceState {
     public static DiceState getForRemainingDices(int remainingDices) {
         DiceState result = states.get(remainingDices);
         if (result == null) {
-            throw new IllegalArgumentException("Dice state for remaining-dices-count does not exist!");
+            throw new IllegalArgumentException("Dice state for remaining-dices-count (" + remainingDices + ") " +
+                    "does not exist!");
         }
         return result;
     }
@@ -51,5 +50,36 @@ class DiceState {
 
     public void addStateChange(DiceStateChange stateChange) {
         stateChanges.add(stateChange);
+    }
+
+    public double calculateExpectedProfit(double pointsSoFarThisTurn) {
+        double failProbability = ProbabilityCalculator.calculateFailingProbability(remainingDices);
+        double win = calculateExpectedProfitInternal(pointsSoFarThisTurn);
+        double loss = pointsSoFarThisTurn * failProbability;
+        return win - loss;
+    }
+
+    private double calculateExpectedProfitInternal(double pointsSoFarThisTurn) {
+        double profitSum = 0.0;
+        for (DiceStateChange stateChange : stateChanges) {
+            // Calculate the profit
+            double profit = stateChange.probability * stateChange.pointsGot;
+            double profitIncludingPointsSoFar = pointsSoFarThisTurn + profit;
+
+            // Add the profit of the next state if existent
+            if (stateChange.nextState != null) {
+                profit += stateChange.nextState.calculateExpectedProfitInternal(profitIncludingPointsSoFar);
+            }
+            profitSum += profit;
+        }
+        return profitSum;
+    }
+
+    @Override
+    public String toString() {
+        return "DiceState{" +
+                "remainingDices=" + remainingDices + ", " +
+                "stateChanges[" + stateChanges.size() + "]" +
+                "}";
     }
 }
