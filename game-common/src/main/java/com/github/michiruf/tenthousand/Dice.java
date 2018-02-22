@@ -78,4 +78,9 @@ public class Dice {
     public int hashCode() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return "Dice{" + value + "}";
+    }
 }

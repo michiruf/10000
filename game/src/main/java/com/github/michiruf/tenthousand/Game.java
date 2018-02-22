@@ -69,6 +69,7 @@ class Game {
         boolean adopted = false;
 
         // Ask the player to adopt or not
+        // TODO Measure time and only take selection if in time (maybe also in start, end, ...?)
         AdoptAction adoptAction = player.decisionInterface.onTurnStart(previousRoundAdoptionState);
 
         // Do the adoption change if possible
@@ -103,6 +104,7 @@ class Game {
                 }
 
                 // Only inform the player when dices are available
+                // TODO Measure time and only take selection if in time (maybe also in start, end, ...?)
                 diceAction = player.decisionInterface.onTurnDiceRolled(dices, points);
 
                 // At least one dice needs to be kept
