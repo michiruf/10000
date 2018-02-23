@@ -30,7 +30,7 @@ class TurnDecider {
 //        valueDices = new Dice[]{Dice.fromSpot(1), Dice.fromSpot(5)};
 //        nonValueDicesCount = 1;
         // TODO It currently takes only the dice 5, which makes no sense!
-        // -> DiceState.getForRemainingDices(1).calculateExpectedProfit(50)   ==> -8.3
+//         -> DiceState.getForRemainingDices(1).calculateExpectedProfit(50)   ==> -8.3
         // -> DiceState.getForRemainingDices(1).calculateExpectedProfit(100)  ==> -41.6
         // TODO WTF -> Error in calculateExpectedProfit...!
 

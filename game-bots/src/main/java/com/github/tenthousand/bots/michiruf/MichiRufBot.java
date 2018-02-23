@@ -13,6 +13,7 @@ public class MichiRufBot implements PlayerInterface {
     @Override
     public void onInitialization() {
         DiceState.initialize(Configuration.NO_DICES);
+//        DiceProbability.initialize(Configuration.NO_DICES);
     }
 
     @Override

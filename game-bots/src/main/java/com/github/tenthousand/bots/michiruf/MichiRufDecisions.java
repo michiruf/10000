@@ -9,11 +9,13 @@ import com.github.michiruf.tenthousand.exception.GameException;
  */
 class MichiRufDecisions implements PlayerDecisionInterface {
 
+    public static Player[] playersStatic; // TODO Just for debugging static, remove!
     private Player[] players;
     private Player me;
 
     @Override
     public void onGameStart(Player[] players, Player self) {
+        playersStatic = players;
         this.players = players;
         me = self;
     }
