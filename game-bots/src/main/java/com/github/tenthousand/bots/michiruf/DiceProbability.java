@@ -1,7 +1,6 @@
 package com.github.tenthousand.bots.michiruf;
 
 import com.github.michiruf.tenthousand.Dice;
-import com.github.michiruf.tenthousand.DicesValueDetector;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,34 +10,6 @@ import java.util.stream.Collectors;
  * @since 2018-02-23
  */
 class DiceProbability {
-
-    // TODO Calculate all possibilities of dices and calculate the next state probabilities and "worth's" for each
-
-    public static void initialize(int numberOfDices) {
-        DiceState rootState = DiceState.getForRemainingDices(4); // TODO Hardcoded
-
-        for (int i = 1; i <= numberOfDices; i++) {
-            // Calculate the reduced dice combinations count
-            List<Dice[]> diceCombinations = calculateDiceCombinationsForDiceCount(i);
-            List<Dice[]> filteredDiceCombinations = diceCombinations.stream()
-                    .filter(dices -> new DicesValueDetector(dices).hasOnlyValues())
-                    .collect(Collectors.toList());
-            Map<Dice[], Integer> reducedDiceCombinationCounts = reduceCombinationsToUniqueAndCount(filteredDiceCombinations);
-
-            // Create the dice state changes with this additional information
-            DiceState state = DiceState.getForRemainingDices(i);
-            for (Map.Entry<Dice[], Integer> entry : reducedDiceCombinationCounts.entrySet()) {
-                Dice[] dices = entry.getKey();
-                int remainingDices = i - dices.length;
-                state.addStateChange(new DiceStateChange(
-                        dices.length,
-                        new DicesValueDetector(dices).calculatePoints(),
-                        (double) entry.getValue() / (double) diceCombinations.size(),
-                        remainingDices != 0 ? DiceState.getForRemainingDices(remainingDices) : rootState
-                ));
-            }
-        }
-    }
 
     public static List<Dice[]> calculateDiceCombinationsForDiceCount(int numberOfDices) {
         List<Dice[]> diceCombinations = new ArrayList<>();
@@ -55,6 +26,7 @@ class DiceProbability {
     public static Map<Dice[], Integer> reduceCombinationsToUniqueAndCount(List<Dice[]> diceCombinations) {
         Map<List<Dice>, Integer> uniqueDiceCombinationCounts = new HashMap<>();
         diceCombinations.forEach(diceCombination -> {
+            // Use a list first, because it has a proper hashCode, which an array has not
             List<Dice> dices = Arrays.stream(diceCombination)
                     .sorted(Comparator.comparingInt(Dice::getValue))
                     .collect(Collectors.toList());
@@ -67,20 +39,53 @@ class DiceProbability {
         return result;
     }
 
-//    public static Map<Set<Dice>, Integer> reduceCombinationsToUniqueAndCount_OLD(List<Dice[]> diceCombinations) {
-//        Map<Set<Dice>, Integer> uniqueDiceCombinationCounts = new HashMap<>();
-//        diceCombinations.forEach(diceCombination -> {
-//            DicesValueDetector d = new DicesValueDetector(diceCombination);
-//            if (d.hasOnlyValues()) {
-//                Set<Dice> dices = new HashSet<>();
-//                dices.addAll(Arrays.asList(d.getValuableDices()));
-//                uniqueDiceCombinationCounts.put(dices, uniqueDiceCombinationCounts.getOrDefault(dices, 0) + 1);
-//            }
-//        });
-//        return uniqueDiceCombinationCounts;
-//    }
+    public static double calculateFailingProbability(int numberOfDices) {
+        // Note, that these numbers came from the test where all possibilities were gone through
+        // TODO Calculate this data dice dependent!
+        switch (numberOfDices) {
+            case 1:
+                // 4 / 6
+                return 2.0 / 3.0;
+            case 2:
+                // 16 / 36
+                return 16.0 / 36.0;
+            case 3:
+                // 60 / 216
+                return 5.0 / 18.0;
+            case 4:
+                // 204 / 1296
+                return 17.0 / 108.0;
+            case 5:
+                // 600 / 7776
+                return 25.0 / 324.0;
+            case 6:
+                // 1440 / 46656
+                return 1440.0 / 46656.0;
+        }
+        // Default should be 1 because this probability decreased the more dices there are
+        return 1;
+    }
 
-    private static class DiceProbabilityEntry {
+    private static final double _1 = 1.0 / 6.0;
+    private static final double _2 = 2 * _1;
+    private static final double _3 = 3 * _1;
+    private static final double _4 = 4 * _1;
+    private static final double _5 = 5 * _1;
 
+    // NOTE This is not correct yet...
+    public static double calculateFailingProbability2(int numberOfDices) {
+        switch (numberOfDices) {
+            case 1:
+            case 2:
+                return Math.pow(_4, numberOfDices);
+            case 3:
+            case 4:
+                return Math.pow(_4, 2) * Math.pow(_3, numberOfDices % 2 + 1);
+            case 5:
+            case 6:
+                return Math.pow(_4, 2) * Math.pow(_3, 2) * Math.pow(_2, numberOfDices % 2 + 1);
+        }
+        // Default should be 1 because this probability decreased the more dices there are
+        return 1;
     }
 }

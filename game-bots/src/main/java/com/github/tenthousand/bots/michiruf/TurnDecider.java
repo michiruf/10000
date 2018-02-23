@@ -14,27 +14,21 @@ import java.util.stream.Collectors;
  */
 class TurnDecider {
 
-    private final DicesValueDetector valueDetector;
+    private final Dice[] dices; // TODO At least for debugging
     private final int pointsThisRoundSoFar;
+    private final DicesValueDetector valueDetector;
 
     public TurnDecider(Dice[] dices, int pointsThisRoundSoFar) {
-        valueDetector = new DicesValueDetector(dices);
+        this.dices = dices;
         this.pointsThisRoundSoFar = pointsThisRoundSoFar;
+        valueDetector = new DicesValueDetector(dices);
     }
 
     public DiceAction calculateDecision() {
         Dice[] valueDices = valueDetector.getValuableDices();
         int nonValueDicesCount = valueDetector.getNonValuableDices().length;
 
-        // TODO Remove fake data
-//        valueDices = new Dice[]{Dice.fromSpot(1), Dice.fromSpot(5)};
-//        nonValueDicesCount = 1;
-        // TODO It currently takes only the dice 5, which makes no sense!
-//         -> DiceState.getForRemainingDices(1).calculateExpectedProfit(50)   ==> -8.3
-        // -> DiceState.getForRemainingDices(1).calculateExpectedProfit(100)  ==> -41.6
-        // TODO WTF -> Error in calculateExpectedProfit...!
-
-        // If there a no non value dices, just take all and continue with 6 dices!
+        // If there a no non value dices, just take all and continue with all dices!
         if (nonValueDicesCount == 0) {
             return new DiceAction(valueDices, true);
         }
@@ -45,25 +39,26 @@ class TurnDecider {
                 .filter(subset -> new DicesValueDetector(subset).hasOnlyValues())
                 .collect(Collectors.toList());
         double maxProfit = 0;
-        int maxProfitIndex = -1;
+        int maxProfitSubsetIndex = -1;
         for (int i = 0; i < subsets.size(); i++) {
             Dice[] subset = subsets.get(i);
             int subsetValue = new DicesValueDetector(subset).calculatePoints();
-            double subsetProfit = DiceState
+            double subsetProfit = subsetValue + DiceState
                     .getForRemainingDices(nonValueDicesCount + (valueDices.length - subset.length))
                     .calculateExpectedProfit(pointsThisRoundSoFar + subsetValue);
+            // TODO Change "calculateExpectedProfit", because its not good enough..
             if (subsetProfit > maxProfit) {
                 maxProfit = subsetProfit;
-                maxProfitIndex = i;
+                maxProfitSubsetIndex = i;
             }
         }
 
         // If a maximum profit was found (greater 0), continue!
-        if (maxProfitIndex >= 0) {
-            return new DiceAction(subsets.get(maxProfitIndex), true);
+        if (maxProfitSubsetIndex >= 0) {
+            return new DiceAction(subsets.get(maxProfitSubsetIndex), true);
         }
 
-        // Else, just keep the stuff if we have the round limit reached yet
+        // Else, just keep the stuff if we have the round limit not reached yet
         return new DiceAction(valueDices,
                 valueDetector.calculatePoints() + pointsThisRoundSoFar < 250);
     }

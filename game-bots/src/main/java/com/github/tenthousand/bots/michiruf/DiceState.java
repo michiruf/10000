@@ -1,12 +1,7 @@
 package com.github.tenthousand.bots.michiruf;
 
-import com.github.michiruf.tenthousand.Dice;
-import com.github.michiruf.tenthousand.DicesValueDetector;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author Michael Ruf
@@ -14,7 +9,6 @@ import java.util.stream.Collectors;
  */
 class DiceState {
 
-    // NOTE Could be just a list!
     private static List<DiceState> states;
 
     public static void initialize(int numberOfDices) {
@@ -30,30 +24,8 @@ class DiceState {
         for (int i = 1; i <= numberOfDices; i++) {
             DiceState current = getForRemainingDices(i);
             for (int j = 1; j <= current.getRemainingDices(); j++) {
-                calculateStateChanges(current, j, rootState);
+                DiceStateChange.calculateStateChanges(current, j, rootState);
             }
-        }
-    }
-
-    private static void calculateStateChanges(DiceState state, int usedDices, DiceState rootState) {
-        // Calculate the reduced dice combinations count
-        List<Dice[]> diceCombinations = DiceProbability.calculateDiceCombinationsForDiceCount(usedDices);
-        List<Dice[]> filteredDiceCombinations = diceCombinations.stream()
-                .filter(dices -> new DicesValueDetector(dices).hasOnlyValues())
-                .collect(Collectors.toList());
-        Map<Dice[], Integer> reducedDiceCombinationCounts = DiceProbability.reduceCombinationsToUniqueAndCount(
-                filteredDiceCombinations);
-
-        // Create the dice state changes with this additional information
-        for (Map.Entry<Dice[], Integer> entry : reducedDiceCombinationCounts.entrySet()) {
-            Dice[] dices = entry.getKey();
-            int remainingDices = usedDices - dices.length;
-            state.addStateChange(new DiceStateChange(
-                    dices.length,
-                    new DicesValueDetector(dices).calculatePoints(),
-                    (double) entry.getValue() / (double) diceCombinations.size(),
-                    remainingDices != 0 ? DiceState.getForRemainingDices(remainingDices) : rootState
-            ));
         }
     }
 
@@ -85,19 +57,8 @@ class DiceState {
         stateChanges.add(stateChange);
     }
 
-    public double calculateProbSum() {
-        double prob = 0.0;
-        for (DiceStateChange stateChange : stateChanges) {
-            prob += stateChange.probability;
-            if (stateChange.nextState != null) {
-                prob += stateChange.probability * stateChange.nextState.calculateProbSum();
-            }
-        }
-        return prob;
-    }
-
     public double calculateExpectedProfit(double pointsSoFarThisTurn) {
-        double failProbability = ProbabilityCalculator.calculateFailingProbability(remainingDices);
+        double failProbability = DiceProbability.calculateFailingProbability(remainingDices);
         double win = calculateExpectedProfitInternal(1.0);
         double loss = pointsSoFarThisTurn * failProbability;
         return win - loss;
@@ -112,7 +73,7 @@ class DiceState {
             double weightedProfit = probability * profit;
 
             // Calculate the next states profit if this is still worth enough
-            if (weightedProfit > 1.0) {
+            if (weightedProfit > 0.001) {
                 weightedProfit += stateChange.nextState
                         .calculateExpectedProfitInternal(probability);
             }

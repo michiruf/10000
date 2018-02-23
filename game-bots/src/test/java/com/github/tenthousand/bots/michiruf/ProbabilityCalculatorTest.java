@@ -60,7 +60,7 @@ public class ProbabilityCalculatorTest {
         System.out.println("============================================");
         int noValueCount = testCalculateSpecificFailingProbabilityCalculateCombinations(diceCombinations);
         double percentageNoValue = (double) noValueCount / (double) diceCombinations.size();
-        Assert.assertEquals(percentageNoValue, ProbabilityCalculator.calculateFailingProbability(numDices), 0.00001);
+        Assert.assertEquals(percentageNoValue, DiceProbability.calculateFailingProbability(numDices), 0.00001);
     }
 
     private int testCalculateSpecificFailingProbabilityCalculateCombinations(List<Dice[]> diceCombinations) {
