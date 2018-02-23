@@ -63,5 +63,7 @@ class TurnDecider {
                 valueDetector.calculatePoints() + pointsThisRoundSoFar < 250);
     }
 
+    // TODO LOGGING! to get whats wrong here
+
     // TODO Add a SubsetDataHolder to not create multiple DicesValueDetector's (done at filtering AND point calc)
 }

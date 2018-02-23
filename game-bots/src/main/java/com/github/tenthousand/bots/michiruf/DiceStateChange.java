@@ -14,11 +14,13 @@ import java.util.stream.Collectors;
  */
 class DiceStateChange {
 
-    public static void calculateStateChanges(DiceState state, int usedDices, DiceState rootState) {
+    public static void calculateStateChanges(DiceState state, DiceState rootState) {
         // Calculate the reduced dice combinations count
-        List<Dice[]> diceCombinations = DiceProbability.calculateDiceCombinationsForDiceCount(usedDices);
+        List<Dice[]> diceCombinations = DiceProbability.calculateDiceCombinationsForDiceCount(state.getRemainingDices());
         List<Dice[]> filteredDiceCombinations = diceCombinations.stream()
-                .filter(dices -> new DicesValueDetector(dices).hasOnlyValues())
+                .map(DicesValueDetector::new)
+                .filter(DicesValueDetector::hasAValue)
+                .map(DicesValueDetector::getValuableDices)
                 .collect(Collectors.toList());
         Map<Dice[], Integer> reducedDiceCombinationCounts = DiceProbability.reduceCombinationsToUniqueAndCount(
                 filteredDiceCombinations);

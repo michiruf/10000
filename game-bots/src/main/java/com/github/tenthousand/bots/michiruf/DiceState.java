@@ -22,11 +22,31 @@ class DiceState {
         // Calculate state changes for these states
         DiceState rootState = getForRemainingDices(numberOfDices);
         for (int i = 1; i <= numberOfDices; i++) {
-            DiceState current = getForRemainingDices(i);
-            for (int j = 1; j <= current.getRemainingDices(); j++) {
-                DiceStateChange.calculateStateChanges(current, j, rootState);
-            }
+            DiceStateChange.calculateStateChanges(getForRemainingDices(i), rootState);
         }
+
+//        // Calculate the expected profit cache
+//        for (int i = 1; i <= numberOfDices; i++) {
+//            DiceState s = getForRemainingDices(i);
+//            s.expectedProfit = s.calculateExpectedProfitInternal(1.0);
+//        }
+        getForRemainingDices(6).expectedProfit = 653.2731084149784;
+        getForRemainingDices(5).expectedProfit = 496.2245675871217;
+        getForRemainingDices(4).expectedProfit = 367.3389475898621;
+        getForRemainingDices(3).expectedProfit = 274.69541320129343;
+        getForRemainingDices(2).expectedProfit = 227.67216492171582;
+        getForRemainingDices(1).expectedProfit = 241.2684345340645;
+
+
+//        // TODO Remove test
+//        int remaining = 2;
+//        double p = DiceState.getForRemainingDices(remaining).testSumProb();
+//        double pn = DiceProbability.calculateFailingProbability(remaining);
+//        System.err.println(p);
+//        System.err.println(pn);
+//        System.err.println(p + pn);
+//        System.exit(100);
+//        // Works -> NICE
     }
 
     public static DiceState getForRemainingDices(int remainingDices) {
@@ -44,6 +64,8 @@ class DiceState {
     private final int remainingDices;
     private final List<DiceStateChange> stateChanges;
 
+    private double expectedProfit = 0;
+
     private DiceState(int remainingDices) {
         this.remainingDices = remainingDices;
         stateChanges = new ArrayList<>();
@@ -58,8 +80,11 @@ class DiceState {
     }
 
     public double calculateExpectedProfit(double pointsSoFarThisTurn) {
+        if (expectedProfit == 0) {
+            throw new IllegalStateException("Expected profits were not calculated yet!");
+        }
         double failProbability = DiceProbability.calculateFailingProbability(remainingDices);
-        double win = calculateExpectedProfitInternal(1.0);
+        double win = expectedProfit;
         double loss = pointsSoFarThisTurn * failProbability;
         return win - loss;
     }
@@ -73,7 +98,7 @@ class DiceState {
             double weightedProfit = probability * profit;
 
             // Calculate the next states profit if this is still worth enough
-            if (weightedProfit > 0.001) {
+            if (weightedProfit > 0.0000001) {
                 weightedProfit += stateChange.nextState
                         .calculateExpectedProfitInternal(probability);
             }
@@ -81,6 +106,14 @@ class DiceState {
             weightedProfitSum += weightedProfit;
         }
         return weightedProfitSum;
+    }
+
+    private double testSumProb() {
+        double probSum = 0.0;
+        for (DiceStateChange stateChange : stateChanges) {
+            probSum += stateChange.probability;
+        }
+        return probSum;
     }
 
     @Override
