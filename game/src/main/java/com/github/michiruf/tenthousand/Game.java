@@ -156,11 +156,13 @@ class Game {
 
         // Remove points if failed and set the adoption state
         int negAdoptedPoints = -previousRoundAdoptionState.adoptedPoints;
+        previousRoundAdoptionState = RoundAdoptionState.NO_ADOPTION;
         if (adopted) {
             player.addPoints(negAdoptedPoints);
+            player.decisionInterface.onTurnEnd(false, negAdoptedPoints);
+        } else {
+            player.decisionInterface.onTurnEnd(false, 0);
         }
-        previousRoundAdoptionState = RoundAdoptionState.NO_ADOPTION;
-        player.decisionInterface.onTurnEnd(false, negAdoptedPoints);
 
         // Redirect the exception as normally to the calling method
         // By this we ensure that adoption is applied also if a exception occurs
