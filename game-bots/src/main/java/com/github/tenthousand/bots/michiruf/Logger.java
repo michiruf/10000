@@ -8,7 +8,7 @@ import java.util.Arrays;
  * @author Michael Ruf
  * @since 2018-02-23
  */
-public class Logger {
+class Logger {
 
     private static boolean active;
 
