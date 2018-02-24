@@ -12,6 +12,7 @@ public class MichiRufBot implements PlayerInterface {
 
     @Override
     public void onInitialization() {
+        Logger.initialize(false);
         DiceState.initialize(Configuration.NO_DICES);
     }
 

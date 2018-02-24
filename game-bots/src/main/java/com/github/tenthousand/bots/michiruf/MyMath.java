@@ -1,6 +1,7 @@
 package com.github.tenthousand.bots.michiruf;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,9 +42,13 @@ class MyMath {
         return sets;
     }
 
-    public static <T> List<List<T>> findSubsetsExcludingEmpty(List<T> originalList) {
-        return findSubsets(originalList).stream()
+    public static <T> List<List<T>> subsetExcludeEmpty(List<List<T>> subsets) {
+        return subsets.stream()
                 .filter(ts -> ts.size() > 0)
                 .collect(Collectors.toList());
+    }
+
+    public static <T> List<List<T>> subsetExcludeDuplicateEntries(List<List<T>> subsets) {
+        return new ArrayList<>(new HashSet<>(subsets));
     }
 }

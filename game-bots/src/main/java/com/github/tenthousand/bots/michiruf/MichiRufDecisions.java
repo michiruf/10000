@@ -9,19 +9,20 @@ import com.github.michiruf.tenthousand.exception.GameException;
  */
 class MichiRufDecisions implements PlayerDecisionInterface {
 
-    public static Player[] playersStatic; // TODO Just for debugging static, remove!
-    private Player[] players;
     private Player me;
 
     @Override
     public void onGameStart(Player[] players, Player self) {
-        playersStatic = players;
-        this.players = players;
         me = self;
     }
 
     @Override
     public AdoptAction onTurnStart(RoundAdoptionState roundAdoptionState) {
+        Logger.log();
+        Logger.log("///////// ROUND START //////////");
+        Logger.log("Points: " + me.getPoints());
+        Logger.log("Adoption: no");
+        Logger.log("////////////////////////////////");
         // For now, because other persons may have always correct decisions, we do never want to adopt stuff
         return AdoptAction.IGNORE;
     }
@@ -39,17 +40,25 @@ class MichiRufDecisions implements PlayerDecisionInterface {
             return new DiceAction(valuableDices, continueTilPointsReached || continueIfTooMuchDicesLeft);
         }
 
-        return new TurnDecider(newDices, pointsThisRoundSoFar).calculateDecision();
+        Logger.log("Points this turn (before decision): " + pointsThisRoundSoFar);
+        Logger.logDices("Dices: {%s}", newDices);
+        DiceAction decision = new TurnDecider(newDices, pointsThisRoundSoFar).calculateDecision();
+        Logger.log("================================");
+        return decision;
     }
 
     @Override
     public void onTurnEnd(boolean successfulRound, int pointsReceived) {
-
+        Logger.log("\\\\\\\\\\\\\\\\\\\\ ROUND END \\\\\\\\\\\\\\\\\\\\\\");
+        Logger.log("Round state: " + (successfulRound ? "success" : "failure"));
+        Logger.log("Points got: " + pointsReceived);
+        Logger.log("Points: " + me.getPoints());
+        Logger.log("\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
     }
 
     @Override
     public void onGameEnd(Player[] players, Player[] wonPlayers) {
-
+        // No need to do something here yet
     }
 
     @Override
