@@ -15,6 +15,11 @@ import java.util.stream.Collectors;
  */
 class TurnDecider {
 
+    // I do not know why this is a good value...
+    // This factor is multiplied by the loss in the expected profit function
+    // to reduce the bots risk of loosing all points in a round
+    private static final double lossProtectionFactor = 2.85;
+
     private final Dice[] dices; // TODO At least for debugging
     private final int pointsThisRoundSoFar;
     private final DicesValueDetector valueDetector;
@@ -58,7 +63,7 @@ class TurnDecider {
             DiceState subsetState = DiceState.getForRemainingDices(nonValueDicesCount +
                     (valueDices.length - subset.length));
             double subsetProfit = subsetValue + subsetState.calculateExpectedProfit(
-                    pointsThisRoundSoFar + valuePoints);
+                    pointsThisRoundSoFar + valuePoints, lossProtectionFactor);
             if (subsetProfit > maxProfit) {
                 maxProfit = subsetProfit;
                 maxProfitSubsetIndex = i;

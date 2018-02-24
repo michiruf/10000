@@ -79,14 +79,14 @@ class DiceState {
         stateChanges.add(stateChange);
     }
 
-    public double calculateExpectedProfit(double pointsSoFarThisTurn) {
+    public double calculateExpectedProfit(double pointsSoFarThisTurn, double lossProtectionFactor) {
         if (expectedProfit == 0) {
             throw new IllegalStateException("Expected profits were not calculated yet!");
         }
         double failProbability = DiceProbability.calculateFailingProbability(remainingDices);
         double win = expectedProfit;
         double loss = pointsSoFarThisTurn * failProbability;
-        return win - loss;
+        return win - loss * lossProtectionFactor;
     }
 
     private double calculateExpectedProfitInternal(double previousProbabilities) {
