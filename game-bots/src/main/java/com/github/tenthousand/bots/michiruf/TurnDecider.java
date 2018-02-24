@@ -27,6 +27,7 @@ class TurnDecider {
 
     public DiceAction calculateDecision() {
         Dice[] valueDices = valueDetector.getValuableDices();
+        int valuePoints = valueDetector.calculatePoints();
         int nonValueDicesCount = valueDetector.getNonValuableDices().length;
 
         // If there a no non value dices, just take all and continue with all dices!
@@ -49,7 +50,7 @@ class TurnDecider {
         Logger.log();
 
         // Filter subsets and find the one with the most profit
-        double maxProfit = valueDetector.calculatePoints();
+        double maxProfit = valuePoints;
         int maxProfitSubsetIndex = -1;
         for (int i = 0; i < subsets.size(); i++) {
             Dice[] subset = subsets.get(i);
@@ -57,7 +58,7 @@ class TurnDecider {
             DiceState subsetState = DiceState.getForRemainingDices(nonValueDicesCount +
                     (valueDices.length - subset.length));
             double subsetProfit = subsetValue + subsetState.calculateExpectedProfit(
-                    pointsThisRoundSoFar + subsetValue);
+                    pointsThisRoundSoFar + valuePoints);
             if (subsetProfit > maxProfit) {
                 maxProfit = subsetProfit;
                 maxProfitSubsetIndex = i;
@@ -74,8 +75,6 @@ class TurnDecider {
         // Else, just keep the stuff if we have the round limit not reached yet
         Logger.logDices("Took valuable dices: {%s}", valueDices);
         return new DiceAction(valueDices,
-                valueDetector.calculatePoints() + pointsThisRoundSoFar < 250);
+                valuePoints + pointsThisRoundSoFar < 250);
     }
-
-    // TODO Add a SubsetDataHolder to not create multiple DicesValueDetector's (done at filtering AND point calc)
 }
