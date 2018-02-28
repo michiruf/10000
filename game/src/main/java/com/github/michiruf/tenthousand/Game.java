@@ -64,7 +64,7 @@ class Game {
 
         // Initial values
         int points = 0;
-        int numberOfDices = 0;
+        int numberOfDices = Configuration.NO_DICES;
         boolean failed = false;
         boolean adopted = false;
 
@@ -89,11 +89,6 @@ class Game {
         try {
             DiceAction diceAction;
             do {
-                // If there are no dices left. Put all back in ("Alle wieder nei")
-                if (numberOfDices == 0) {
-                    numberOfDices = Configuration.NO_DICES;
-                }
-
                 // Roll the dice
                 Dice[] dices = Dice.randomSorted(numberOfDices);
 
@@ -125,6 +120,11 @@ class Game {
                 // Keep the dices the player wanted (by the points)
                 points += DicesValueDetector.calculatePoints(diceAction.dicesToKeep);
                 numberOfDices -= diceAction.dicesToKeep.length;
+
+                // If there are no dices left. Put all back in ("Alle wieder nei")
+                if (numberOfDices == 0) {
+                    numberOfDices = Configuration.NO_DICES;
+                }
             }
             // As long as the player wants to continue;
             while (diceAction.continueTurn);
