@@ -80,8 +80,17 @@ class StatePre {
     }
 
     static StatePre mapToRepresentative(StatePre s) {
+        // standard start
         if (s.diceOnTable == null) return s;
-        if (s.diceOnTable.length == 1) return s;
+
+        // adopt possibility
+        if (s.diceOnTable.length == 1) {
+            if (s.q <= Zer.MAX_POINTS) {
+                return s;
+            } else {
+                return new StatePre(s.p, Zer.MAX_POINTS, AH.clone(s.diceOnTable));
+            }
+        }
 
         // during turn states
         // all dice that do not yield points are added to slot [0] of the spotses array
@@ -144,5 +153,18 @@ class StatePre {
 
     public String toString() {
         return p + "," + q + " > " + Zer.diceToString(diceOnTable);
+    }
+
+    public static void main(String[] args) {
+        StatePre s = new StatePre(0, 0, new int[] { 0, 1, 1, 1, 0, 0, 3 });
+        System.out.println(s);
+        s = StatePre.mapToRepresentative(s);
+        System.out.println(s);
+        PolicyStateAction pol1000 = new PolicyStateAction(1000,
+                StatePre.class.getResourceAsStream("/chrisiruf_zerstoerer/pol1000"));
+        PolicyStateAction pol250 = new PolicyStateAction(250,
+                StatePre.class.getResourceAsStream("/chrisiruf_zerstoerer/pol250"));
+        pol1000.A(s);
+        pol250.A(s);
     }
 }

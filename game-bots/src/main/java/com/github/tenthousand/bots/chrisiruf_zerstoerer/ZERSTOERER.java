@@ -1,6 +1,5 @@
 package com.github.tenthousand.bots.chrisiruf_zerstoerer;
 
-
 import com.github.michiruf.tenthousand.PlayerDecisionInterface;
 import com.github.michiruf.tenthousand.PlayerInterface;
 
@@ -11,8 +10,9 @@ public class ZERSTOERER implements PlayerInterface {
 
     @Override
     public void onInitialization() {
-        pol1000 = new PolicyStateAction(getClass().getResourceAsStream("/chrisiruf_zerstoerer/pol1000"));
-        pol250 = new PolicyStateAction(getClass().getResourceAsStream("/chrisiruf_zerstoerer/pol250"));
+        pol1000 = new PolicyStateAction(1000,
+                getClass().getResourceAsStream("/chrisiruf_zerstoerer/pol1000"));
+        pol250 = new PolicyStateAction(250, getClass().getResourceAsStream("/chrisiruf_zerstoerer/pol250"));
     }
 
     @Override

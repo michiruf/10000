@@ -12,7 +12,6 @@ import com.github.michiruf.tenthousand.exception.GameException;
 
 class ZERSTOERERDecisions implements PlayerDecisionInterface {
 
-
     PolicyStateAction pol;          // active policy
 
     Player[]          players;
@@ -40,6 +39,7 @@ class ZERSTOERERDecisions implements PlayerDecisionInterface {
         if (roundAdoptionState.isAdoptionAvailable() && roundAdoptionState.adoptedPoints <= me.getPoints()) {
             StatePre s = new StatePre(0, roundAdoptionState.adoptedPoints,
                     new int[] { roundAdoptionState.adoptedNumberOfDicesRemaining });
+            s = StatePre.mapToRepresentative(s);
             Decision dec = pol.A(s);
             if (dec.isAdoptDecision()) {
                 pointsAdopted = roundAdoptionState.adoptedPoints;

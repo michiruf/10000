@@ -10,16 +10,23 @@ class PolicyStateAction {
     int                         threshold;
     HashMap<StatePre, Decision> A;
 
-    PolicyStateAction(InputStream path) {
+    PolicyStateAction(int threshold, InputStream path) {
+        System.out.println("initialize policy");
+        this.threshold = threshold;
         A = new HashMap<>();
         loadFromFile(path);
+        System.out.println("threshold = " + threshold);
+        System.out.println("|A| = " + A.size());
     }
 
     Decision A(StatePre s) {
         if (s.totalPoints() > Zer.MAX_POINTS) {
             return new Decision(0, s.diceOnTable);
         }
-        if (!A.containsKey(s)) throw new Error();
+        if (!A.containsKey(s)) {
+            System.err.println("state not found: " + s);
+            throw new Error();
+        }
         return A.get(s);
     }
 

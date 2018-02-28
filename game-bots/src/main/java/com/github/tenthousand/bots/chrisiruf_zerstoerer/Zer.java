@@ -7,13 +7,13 @@ import java.io.IOException;
 
 class Zer {
 
-    final static int        MAX_POINTS = 2400;                                  // inclusive
-    final static int        NO_DICE    = 6;
-    final static int[]      NIETEN     = { 2, 3, 4, 6 };
+    final static int   MAX_POINTS = 2400;          // inclusive
+    final static int   NO_DICE    = 6;
+    final static int[] NIETEN     = { 2, 3, 4, 6 };
 
     static String diceToString(int[] diceFreq) {
         if (diceFreq == null || diceFreq.length != NO_DICE + 1) return AH.toString(diceFreq, "", "", "");
-        int nulpen = 0;
+        int nulpen = diceFreq[0];
         String ret = "";
         if (diceFreq[1] > 0) ret += diceFreq[1] + " 1er, ";
         if (diceFreq[5] > 0) ret += diceFreq[5] + " 5er, ";
