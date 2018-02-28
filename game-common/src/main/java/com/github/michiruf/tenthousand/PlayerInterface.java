@@ -14,7 +14,7 @@ public interface PlayerInterface {
 
     /**
      * Called to receive the players decision interface.
-     * This gets called for every game to have a par game decision interface.
+     * This gets called for every game to have a per game decision interface.
      */
     PlayerDecisionInterface getDecisionInterface();
 }

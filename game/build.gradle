@@ -1,4 +1,4 @@
-def mainClass = 'de.michiruf.control_server.client_java.JavaControlClient'
+def mainClass = 'com.github.michiruf.tenthousand.Main'
 
 apply plugin: 'java'
 apply plugin: 'nebula.provided-base'
