@@ -44,7 +44,6 @@ public class ContinueTurnUntilPointsReachedPlayer implements PlayerInterface {
             // Continue until the round threshold is reached
             int dp = DicesValueDetector.calculatePoints(newDices);
             int sp = dp + pointsThisRoundSoFar;
-            System.out.println("Points " + pointsThisRoundSoFar + " + " + dp + " = " + sp);
             return new DiceAction(DicesValueDetector.getValuableDices(newDices), sp < 250);
         }
 

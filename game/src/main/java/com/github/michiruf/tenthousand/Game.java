@@ -64,11 +64,12 @@ class Game {
 
         // Initial values
         int points = 0;
-        int numberOfDices = 0;
+        int numberOfDices = Configuration.NO_DICES;
         boolean failed = false;
         boolean adopted = false;
 
         // Ask the player to adopt or not
+        // TODO Measure time and only take selection if in time (maybe also in start, end, ...?)
         AdoptAction adoptAction = player.decisionInterface.onTurnStart(previousRoundAdoptionState);
 
         // Do the adoption change if possible
@@ -88,11 +89,6 @@ class Game {
         try {
             DiceAction diceAction;
             do {
-                // If there are no dices left. Put all back in ("Alle wieder nei")
-                if (numberOfDices == 0) {
-                    numberOfDices = Configuration.NO_DICES;
-                }
-
                 // Roll the dice
                 Dice[] dices = Dice.randomSorted(numberOfDices);
 
@@ -103,6 +99,7 @@ class Game {
                 }
 
                 // Only inform the player when dices are available
+                // TODO Measure time and only take selection if in time (maybe also in start, end, ...?)
                 diceAction = player.decisionInterface.onTurnDiceRolled(dices, points);
 
                 // At least one dice needs to be kept
@@ -123,6 +120,11 @@ class Game {
                 // Keep the dices the player wanted (by the points)
                 points += DicesValueDetector.calculatePoints(diceAction.dicesToKeep);
                 numberOfDices -= diceAction.dicesToKeep.length;
+
+                // If there are no dices left. Put all back in ("Alle wieder nei")
+                if (numberOfDices == 0) {
+                    numberOfDices = Configuration.NO_DICES;
+                }
             }
             // As long as the player wants to continue;
             while (diceAction.continueTurn);
@@ -154,11 +156,13 @@ class Game {
 
         // Remove points if failed and set the adoption state
         int negAdoptedPoints = -previousRoundAdoptionState.adoptedPoints;
+        previousRoundAdoptionState = RoundAdoptionState.NO_ADOPTION;
         if (adopted) {
             player.addPoints(negAdoptedPoints);
+            player.decisionInterface.onTurnEnd(false, negAdoptedPoints);
+        } else {
+            player.decisionInterface.onTurnEnd(false, 0);
         }
-        previousRoundAdoptionState = RoundAdoptionState.NO_ADOPTION;
-        player.decisionInterface.onTurnEnd(false, negAdoptedPoints);
 
         // Redirect the exception as normally to the calling method
         // By this we ensure that adoption is applied also if a exception occurs

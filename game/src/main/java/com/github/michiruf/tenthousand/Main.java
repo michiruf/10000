@@ -57,8 +57,9 @@ public class Main {
             int finalI = i;
             // Enqueue a game and start it when a thread is ready
             executor.execute(() -> {
-                // Start the game and run it until done
                 System.out.println("Starting game #" + (finalI + 1));
+
+                // Start the game and run it until done
                 Game g = new Game(playerInterfaces.stream()
                         .map(playerInterface -> new Player(
                                 playerInterface.getClass().getSimpleName(),
@@ -66,7 +67,6 @@ public class Main {
                         .collect(Collectors.toList())
                         .toArray(new Player[playerInterfaces.size()]));
                 g.runGame();
-                System.out.println("Ended game #" + (finalI + 1));
 
                 // Increment the win count of the won players
                 synchronized (lock) {
@@ -74,6 +74,9 @@ public class Main {
                         winnerCounts.put(p.name, winnerCounts.get(p.name) + 1);
                     }
                 }
+
+                // TODO Add winner and round count information to print
+                System.out.println("Ended game #" + (finalI + 1));
             });
         }
 
