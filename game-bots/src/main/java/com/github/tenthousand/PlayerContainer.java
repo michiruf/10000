@@ -1,6 +1,7 @@
 package com.github.tenthousand;
 
 import com.github.michiruf.tenthousand.PlayerInterface;
+import com.github.tenthousand.bots.chrisiruf_zerstoerer.ZERSTOERER;
 import com.github.tenthousand.bots.michiruf.MichiRufBot;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public final class PlayerContainer {
         players.add(new ContinueTurnUntilPointsReachedPlayer());
         players.add(new ConsoleInputPlayer());
         players.add(new MichiRufBot());
+        players.add(new ZERSTOERER());
         return players;
     }
 }
