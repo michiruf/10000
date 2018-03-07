@@ -1,6 +1,12 @@
 package com.github.tenthousand.bots.michiruf;
 
-import com.github.michiruf.tenthousand.*;
+import com.github.michiruf.tenthousand.AdoptAction;
+import com.github.michiruf.tenthousand.Dice;
+import com.github.michiruf.tenthousand.DiceAction;
+import com.github.michiruf.tenthousand.DicesValueDetector;
+import com.github.michiruf.tenthousand.Player;
+import com.github.michiruf.tenthousand.PlayerDecisionInterface;
+import com.github.michiruf.tenthousand.RoundAdoptionState;
 import com.github.michiruf.tenthousand.exception.GameException;
 
 /**
@@ -10,6 +16,7 @@ import com.github.michiruf.tenthousand.exception.GameException;
 class MichiRufDecisions implements PlayerDecisionInterface {
 
     private Player me;
+    private int adoptedPointsThisRound;
 
     @Override
     public void onGameStart(Player[] players, Player self) {
@@ -18,13 +25,30 @@ class MichiRufDecisions implements PlayerDecisionInterface {
 
     @Override
     public AdoptAction onTurnStart(RoundAdoptionState roundAdoptionState) {
+        // Reset the adopted points on turn start
+        adoptedPointsThisRound = 0;
+
         Logger.log();
         Logger.log("///////// ROUND START //////////");
         Logger.log("Points: " + me.getPoints());
-        Logger.log("Adoption: no");
+        Logger.logNoNL("Adoption available: ");
+        if (roundAdoptionState.isAdoptionAvailable()) {
+            Logger.log(String.format("%d dices left, %d points",
+                    roundAdoptionState.adoptedNumberOfDicesRemaining,
+                    roundAdoptionState.adoptedPoints));
+        } else {
+            Logger.log("no");
+        }
+        AdoptAction decision = new AdoptionDecider(roundAdoptionState, me.getPoints()).calculateDecision();
+        Logger.logNoNL("Adoption: ");
+        if (decision == AdoptAction.ADOPT) {
+            adoptedPointsThisRound = roundAdoptionState.adoptedPoints;
+            Logger.log("yes");
+        } else {
+            Logger.log("no");
+        }
         Logger.log("////////////////////////////////");
-        // For now, because other persons may have always correct decisions, we do never want to adopt stuff
-        return AdoptAction.IGNORE;
+        return decision;
     }
 
     @Override
@@ -42,7 +66,8 @@ class MichiRufDecisions implements PlayerDecisionInterface {
 
         Logger.log("Points this turn (before decision): " + pointsThisRoundSoFar);
         Logger.logDices("Dices: {%s}", newDices);
-        DiceAction decision = new TurnDecider(newDices, pointsThisRoundSoFar).calculateDecision();
+        DiceAction decision = new TurnDecider(newDices, pointsThisRoundSoFar, adoptedPointsThisRound)
+                .calculateDecision();
         Logger.log("================================");
         return decision;
     }

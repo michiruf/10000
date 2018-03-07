@@ -20,14 +20,14 @@ class TurnDecider {
     // to reduce the bots risk of loosing all points in a round
     private static final double lossProtectionFactor = 2.85;
 
-    private final Dice[] dices; // TODO At least for debugging
     private final int pointsThisRoundSoFar;
+    private final int adoptedPointsThisRound;
     private final DicesValueDetector valueDetector;
 
-    public TurnDecider(Dice[] dices, int pointsThisRoundSoFar) {
-        this.dices = dices;
+    public TurnDecider(Dice[] dices, int pointsThisRoundSoFar, int adoptedPointsThisRound) {
         this.pointsThisRoundSoFar = pointsThisRoundSoFar;
-        valueDetector = new DicesValueDetector(this.dices);
+        this.adoptedPointsThisRound = adoptedPointsThisRound;
+        valueDetector = new DicesValueDetector(dices);
     }
 
     public DiceAction calculateDecision() {
@@ -63,7 +63,7 @@ class TurnDecider {
             DiceState subsetState = DiceState.getForRemainingDices(nonValueDicesCount +
                     (valueDices.length - subset.length));
             double subsetProfit = subsetValue + subsetState.calculateExpectedProfit(
-                    pointsThisRoundSoFar + valuePoints, lossProtectionFactor);
+                    pointsThisRoundSoFar + adoptedPointsThisRound + valuePoints, lossProtectionFactor);
             if (subsetProfit > maxProfit) {
                 maxProfit = subsetProfit;
                 maxProfitSubsetIndex = i;
